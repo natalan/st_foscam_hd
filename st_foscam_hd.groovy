@@ -1,6 +1,6 @@
 /**
  *  Foscam HD
- *
+ *  Modified: Andrei Zharov :: removed unnecessary for me functionality
  *  Author: skp19
  *  Date: 6/18/14
  *
@@ -12,16 +12,13 @@
  *    - Take a snapshot
  *    - Toggle the infrared lights
  *    - Enable/Disable motion alarm
- *    - Go to and set preset locations
- *    - Enable cruise maps
  *    - Control PTZ
  *    - Reboot
  *
  *  Capability: Image Capture, Polling
  *  Custom Attributes: setStatus, alarmStatus, ledStatus
  *  Custom Commands: alarmOn, alarmOff, toggleAlarm, left, right, up, down,
- *                   stop, set, preset, preset1, preset2, preset3, cruisemap1,
- *                   cruisemap2, cruise, toggleLED, ledOn, ledOff, ledAuto
+ *                   stop, set, toggleLED, ledOn, ledOff, ledAuto
  */
 
 preferences {
@@ -29,11 +26,6 @@ preferences {
   input("password", "password",    title: "Password",                description: "Your Foscam camera password")
   input("ip",       "text",        title: "IP address/Hostname",     description: "The IP address or hostname of your Foscam camera")
   input("port",     "text",        title: "Port",                    description: "The port of your Foscam camera")
-  input("preset1",  "text",        title: "Preset 1",                description: "Name of your first preset position")
-  input("preset2",  "text",        title: "Preset 2",                description: "Name of your second preset position")
-  input("preset3",  "text",        title: "Preset 3",                description: "Name of your third preset position")
-  input("cruisemap1",  "text",     title: "Cruise Map 1",            description: "Name of your first cruise map")
-  input("cruisemap2",  "text",     title: "Cruise Map 2",            description: "Name of your second cruise map")
 }
 
 metadata {
@@ -53,19 +45,11 @@ metadata {
     command "up"
     command "down"
     command "stop"
-    command "set"
-    command "preset"
-    command "preset1"
-    command "preset2"
-    command "preset3"
-	command "cruisemap1"
-	command "cruisemap2"
-	command "cruise"
-	command "toggleLED"
-	command "ledOn"
-	command "ledOff"
-	command "ledAuto"
-	command "reboot"
+    command "toggleLED"
+    command "ledOn"
+    command "ledOff"
+    command "ledAuto"
+    command "reboot"
   }
 
   tiles {
@@ -92,18 +76,6 @@ metadata {
       state "off", label: "off", action: "toggleAlarm", icon: "st.quirky.spotter.quirky-spotter-sound-off", backgroundColor: "#FFFFFF"
       state "on", label: "on", action: "toggleAlarm", icon: "st.quirky.spotter.quirky-spotter-sound-on",  backgroundColor: "#53A7C0"
     }
-
-	standardTile("preset1", "device.image", width: 1, height: 1, canChangeIcon: false, canChangeBackground: false, decoration: "flat") {
-      state "preset1", label: "preset 1", action: "preset1", icon: ""
-    }
-
-    standardTile("preset2", "device.image", width: 1, height: 1, canChangeIcon: false, canChangeBackground: false, decoration: "flat") {
-      state "preset2", label: "preset 2", action: "preset2", icon: ""
-    }
-
-    standardTile("preset3", "device.image", width: 1, height: 1, canChangeIcon: false, canChangeBackground: false, decoration: "flat") {
-      state "preset3", label: "preset 3", action: "preset3", icon: ""
-    }
 	
     standardTile("left", "device.image", width: 1, height: 1, canChangeIcon: false,  canChangeBackground: false, decoration: "flat") {
       state "left", label: "left", action: "left", icon: ""
@@ -125,36 +97,24 @@ metadata {
       state "down", label: "down", action: "down", icon: "st.thermostat.thermostat-down"
     }
 
-    standardTile("cruisemap1", "device.image", width: 1, height: 1, canChangeIcon: false, canChangeBackground: false, decoration: "flat") {
-      state "cruisemap1", label: "Cruise Map 1", action: "cruisemap1", icon: ""
-    }
-
-    standardTile("cruisemap2", "device.image", width: 1, height: 1, canChangeIcon: false, canChangeBackground: false, decoration: "flat") {
-      state "cruisemap2", label: "Cruise Map 2", action: "cruisemap2", icon: ""
-    }
 	
-    standardTile("set", "device.setStatus", width: 1, height: 1, canChangeIcon: false, inactiveLabel: true, canChangeBackground: false) {
-      state "set", label: "preset", action: "set", icon: "",  backgroundColor: "#FFFFFF"
-      state "add", label: "set mode", action: "set", icon: "", backgroundColor: "#53A7C0"
-    }
-
     standardTile("refresh", "device.alarmStatus", inactiveLabel: false, decoration: "flat") {
       state "refresh", action:"polling.poll", icon:"st.secondary.refresh"
     }
 
-	standardTile("ledStatus", "device.ledStatus", width: 1, height: 1, canChangeIcon: false, inactiveLabel: true, canChangeBackground: false) {
+    standardTile("ledStatus", "device.ledStatus", width: 1, height: 1, canChangeIcon: false, inactiveLabel: true, canChangeBackground: false) {
       state "auto", label: "auto", action: "toggleLED", icon: "st.Lighting.light13", backgroundColor: "#53A7C0"
 	  state "off", label: "off", action: "toggleLED", icon: "st.Lighting.light13", backgroundColor: "#FFFFFF"
       state "on", label: "on", action: "toggleLED", icon: "st.Lighting.light11", backgroundColor: "#FFFF00"
 	  state "manual", label: "manual", action: "toggleLED", icon: "st.Lighting.light13", backgroundColor: "#FFFF00"
     }
 	
-	standardTile("reboot", "device.image", inactiveLabel: false, decoration: "flat") {
+    standardTile("reboot", "device.image", inactiveLabel: false, decoration: "flat") {
       state "reboot", label: "reboot", action: "reboot", icon: "st.Health & Wellness.health8"
     }
 	
     main "foscam"
-      details(["cameraDetails", "take", "ledStatus", "alarmStatus", "preset1", "preset2", "preset3", "cruisemap1", "up", "cruisemap2", "left", "stop", "right", "blank", "down", ,"blank", "refresh", "set", "reboot"])
+      details(["cameraDetails", "take", "ledStatus", "alarmStatus", "up", "left", "stop", "right", "blank", "down", ,"blank", "refresh", "set", "reboot"])
   }
 }
 
@@ -233,94 +193,6 @@ def stop() {
   api("decoder_control", "cmd=ptzStopRun") {
     log.debug("Executing 'STOP'")
   }
-}
-
-def preset1() {
-  log.debug("Preset 1 Selected - ${preset1}")
-  preset("${preset1}")
-}
-
-def preset2() {
-  log.debug("Preset 2 Selected - ${preset2}")
-  preset("${preset2}")
-}
-
-def preset3() {
-  log.debug("Preset 3 Selected - ${preset3}")
-  preset("${preset3}")
-}
-
-//Go to a preset location
-def preset(def presetname) {
-  if(presetname == null) return
-
-  if(device.currentValue("setStatus") == "add") {
-    setPreset(presetname)
-  }
-
-  else {
-    log.debug("Go To Preset Location - " + presetname)
-	def cmd = "cmd=ptzGotoPresetPoint&name=" + presetname
-
-    api("decoder_control", "${cmd}") {}
-  }
-}
-
-//Set the selected preset to the current location
-def setPreset(def presetname) {
-  log.debug("Set Preset - " + presetname)
-  delPreset(presetname)
-  addPreset(presetname)
-
-  log.debug("Exit Add Preset Mode")
-  sendEvent(name: "setStatus", value: "set");
-}
-
-//Delete currently selected preset
-def delPreset(def presetname) {
-  log.debug("Delete Preset Location - " + presetname)
-  def cmd = "cmd=ptzDeletePresetPoint&name=" + presetname
-  api("decoder_control", "${cmd}") {}
-}
-
-//Add currently selected preset
-def addPreset(def presetname) {
-  log.debug("Add Preset Location - " + presetname)
-  def cmd = "cmd=ptzAddPresetPoint&name=" + presetname
-  api("decoder_control", "${cmd}") {}
-}
-
-//Toggle the the mode to set the preset
-def set() {
-  if((device.currentValue("setStatus") == "set").or(device.currentValue("setStatus") == "")) {
-    log.debug("Entering Add Preset Mode")
-    sendEvent(name: "setStatus", value: "add");
-  }
-
-  else {
-    log.debug("Exit Add Preset Mode")
-    sendEvent(name: "setStatus", value: "set");
-  }
-}
-
-def cruisemap1() {
-  log.debug("Cruise Map 1 Selected - ${cruisemap1}")
-  cruise("${cruisemap1}")
-}
-
-def cruisemap2() {
-  log.debug("Cruise Map 2 Selected - ${cruisemap2}")
-  cruise("${cruisemap2}")
-}
-
-//Start cruise
-def cruise(def cruisename) {
-
-  log.debug("Start Cruise Map - " + cruisename)
-  def cmd = "cmd=ptzStartCruise&mapName=" + cruisename
-
-  api("decoder_control", "${cmd}") {}
-
 }
 
 //Toggle LED's

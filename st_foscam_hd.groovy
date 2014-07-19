@@ -78,7 +78,7 @@ metadata {
     }
 	
     standardTile("left", "device.image", width: 1, height: 1, canChangeIcon: false,  canChangeBackground: false, decoration: "flat") {
-      state "left", label: "left", action: "left", icon: ""
+      state "left", label: "left", action: "left", icon: "st.sonos.previous-btn"
     }
 
     standardTile("stop", "device.image", width: 1, height: 1, canChangeIcon: false,  canChangeBackground: false, decoration: "flat") {
@@ -86,7 +86,7 @@ metadata {
     }
     
     standardTile("right", "device.image", width: 1, height: 1, canChangeIcon: false,  canChangeBackground: false, decoration: "flat") {
-      state "right", label: "right", action: "right", icon: ""
+      state "right", label: "right", action: "right", icon: "st.sonos.next-btn"
     }
 
     standardTile("blank", "device.image", width: 1, height: 1, canChangeIcon: false,  canChangeBackground: false, decoration: "flat") {

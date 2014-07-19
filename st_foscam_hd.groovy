@@ -22,10 +22,10 @@
  */
 
 preferences {
+  input("ip",       "text",        title: "IP address/Hostname",     description: "External IP address or hostname")
+  input("port",     "number",        title: "Port",                    description: "Port")
   input("username", "text",        title: "Username",                description: "Your Foscam camera username")
   input("password", "password",    title: "Password",                description: "Your Foscam camera password")
-  input("ip",       "text",        title: "IP address/Hostname",     description: "The IP address or hostname of your Foscam camera")
-  input("port",     "text",        title: "Port",                    description: "The port of your Foscam camera")
 }
 
 metadata {
@@ -35,7 +35,7 @@ metadata {
 
     attribute "setStatus",   "string"
     attribute "alarmStatus", "string"
-	attribute "ledStatus",   "string"
+	  attribute "ledStatus",   "string"
 
     command "alarmOn"
     command "alarmOff"
@@ -104,9 +104,9 @@ metadata {
 
     standardTile("ledStatus", "device.ledStatus", width: 1, height: 1, canChangeIcon: false, inactiveLabel: true, canChangeBackground: false) {
       state "auto", label: "auto", action: "toggleLED", icon: "st.Lighting.light13", backgroundColor: "#53A7C0"
-	  state "off", label: "off", action: "toggleLED", icon: "st.Lighting.light13", backgroundColor: "#FFFFFF"
+	    state "off", label: "off", action: "toggleLED", icon: "st.Lighting.light13", backgroundColor: "#FFFFFF"
       state "on", label: "on", action: "toggleLED", icon: "st.Lighting.light11", backgroundColor: "#FFFF00"
-	  state "manual", label: "manual", action: "toggleLED", icon: "st.Lighting.light13", backgroundColor: "#FFFF00"
+	    state "manual", label: "manual", action: "toggleLED", icon: "st.Lighting.light13", backgroundColor: "#FFFF00"
     }
 	
     standardTile("reboot", "device.image", inactiveLabel: false, decoration: "flat") {
@@ -269,7 +269,7 @@ def poll() {
   //Poll Motion Alarm Status
   api("get_params", "cmd=getMotionDetectConfig") {
     def CGI_Result = new XmlParser().parse(it.data)
-	def motionAlarm = CGI_Result.isEnable.text()
+	  def motionAlarm = CGI_Result.isEnable.text()
 
 	if(motionAlarm == "0") {
       log.info("Polled: Alarm Off")
@@ -285,7 +285,7 @@ def poll() {
   //Poll IR LED Mode
   api("get_params", "cmd=getInfraLedConfig") {
     def CGI_Result = new XmlParser().parse(it.data)
-	def ledMode = CGI_Result.mode.text()
+	  def ledMode = CGI_Result.mode.text()
   
     if(ledMode == "0") {
       log.info("Polled: LED Mode Auto")
